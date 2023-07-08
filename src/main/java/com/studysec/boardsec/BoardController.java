@@ -36,7 +36,7 @@ public class BoardController {
         return "message";
     }
 
-    @GetMapping("/board/list")
+    @GetMapping("https://port-0-boardreal-20zynm2mljnvwj5q.sel4.cloudtype.app/")
     public String boardList(Model model,@PageableDefault(page = 0, size = 100000, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
         model.addAttribute("list", boardService.boardList(pageable));
