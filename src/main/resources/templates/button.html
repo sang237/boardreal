@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+
+<style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .btn {
+      margin: 1rem;
+
+      &-jittery {
+        animation: jittery 4s infinite;
+      }
+
+      &-icon {
+        position: relative;
+        margin-left: 8px;
+        overflow: hidden;
+
+        i {
+          position: absolute;
+          top: 41%;
+          left: 48%;
+          transform: scale(0.75) translate(-16%, 400%);
+          transition: 0.2s;
+        }
+
+        span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: 0.2s;
+        }
+
+        &:hover {
+          i {
+            transform: scale(0.75) translate(-16%, 0);
+          }
+
+          span {
+            transform: translateY(-400%);
+          }
+        }
+      }
+
+      &-jelly {
+        &:hover {
+          animation: jelly 0.5s;
+        }
+      }
+
+      &-fill {
+        transition: 0.3s;
+
+        &:hover {
+          background: transparent;
+          box-shadow: inset 0 0 0 36px var(--btn-bg);
+        }
+      }
+
+      &-open {
+        transition: 0.3s;
+
+        &::before {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          z-index: -1;
+          width: 100%;
+          height: 100%;
+          background: var(--btn-bg);
+          transform: scaleX(0);
+          transition: 0.3s;
+        }
+
+        &:hover {
+          background: transparent;
+
+          &::before {
+            transform: scaleX(1);
+          }
+        }
+      }
+
+      &-pulse {
+        &:hover {
+          box-shadow: 0 0 0 18px transparent;
+          animation: pulse 1s;
+        }
+      }
+
+      &-close {
+        transition: 0.3s;
+
+        &:hover {
+          background: transparent;
+          box-shadow: inset 54px 0 0 0 var(--btn-bg),
+            inset -54px 0 0 0 var(--btn-bg);
+        }
+      }
+
+      &-slash {
+        overflow: hidden;
+        transition: 0.3s;
+
+        &::before {
+          position: absolute;
+          content: "";
+          top: 50%;
+          left: 50%;
+          z-index: -1;
+          width: 120%;
+          height: 210%;
+          background: var(--btn-bg);
+          transform: translate(-50%, -50%) rotate(-45deg) scaleX(0);
+          transition: 0.3s;
+        }
+
+        &:hover {
+          background: transparent;
+
+          &::before {
+            transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
+          }
+        }
+      }
+
+      &-fill-up {
+        transition: 0.3s;
+
+        &:hover {
+          background: transparent;
+          box-shadow: inset 0 -54px 0 0 var(--btn-bg);
+        }
+      }
+
+      &-slide {
+        transition: 0.3s;
+
+        &:hover {
+          background: transparent;
+          box-shadow: inset 90px 0 0 0 var(--btn-bg);
+        }
+      }
+
+      &-through {
+        transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1); // ease-in-out-quartic;
+
+        &::before {
+          position: absolute;
+          content: "";
+          top: 0;
+          left: 0;
+          z-index: -1;
+          width: 100%;
+          height: 100%;
+          background: var(--btn-bg);
+          transform: scaleX(0);
+          transform-origin: right;
+          transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        &:hover {
+          color: white;
+          background: transparent;
+
+          &::before {
+            transform: scaleX(1);
+            transform-origin: left;
+          }
+        }
+      }
+
+      &-offset {
+        border-radius: 0;
+        box-shadow: 6px 6px 0 0 var(--btn-bg), inset 6px 6px 0 0 var(--btn-bg);
+        transition: 0.3s;
+
+        &:hover {
+          background: transparent;
+          box-shadow: 0 0 0 0 var(--btn-bg),
+            inset 108px 72px 0 0 var(--btn-bg);
+        }
+      }
+
+      &-flip-down {
+        --flip-button-height: 40px;
+        height: var(--flip-button-height);
+        color: transparent;
+        border: none;
+        border-radius: 0;
+        perspective: 500px;
+        transition: 0.3s;
+
+        &:hover {
+          color: transparent;
+          background: transparent;
+        }
+
+        .front,
+        .back {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+
+        .front {
+          background: var(--btn-bg);
+          color: white;
+          transition: 0.3s;
+          transform-origin: center center calc(var(--flip-button-height) / -2);
+        }
+
+        .back {
+          color: white;
+          background: var(--btn-bg);
+          transform: rotateX(88deg);
+          transform-origin: center center calc(var(--flip-button-height) / -2);
+          transition: 0.3s;
+        }
+
+        &:hover {
+          .front {
+            transform: rotateX(-90deg);
+          }
+
+          .back {
+            transform: rotateX(0deg);
+          }
+        }
+      }
+
+      &-marquee {
+        font-weight: 600;
+        border: none;
+        overflow: hidden;
+        transition: 0.3s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        span {
+          display: block;
+          padding: 0 20px;
+          animation: move-left 2s linear infinite;
+
+          &::after {
+            position: absolute;
+            content: attr(data-text);
+            top: 0;
+            left: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+      &-cross {
+        transform: rotate(0);
+        overflow: hidden;
+        transition: 0.3s;
+
+        &::before,
+        &::after {
+          position: absolute;
+          content: "";
+          left: 0;
+          z-index: -1;
+          width: 100%;
+          height: 50%;
+          background: var(--btn-bg);
+          transform: scaleX(0);
+          transition: transform 0.5s;
+        }
+
+        &::before {
+          top: 0;
+          transform-origin: left;
+        }
+
+        &::after {
+          top: 50%;
+          transform-origin: right;
+        }
+
+        &:hover {
+          background: transparent;
+
+          &::before,
+          &::after {
+            transform: scaleX(1);
+          }
+
+          &::before {
+            transform-origin: right;
+          }
+
+          &::after {
+            transform-origin: left;
+          }
+        }
+      }
+
+      &-open-line {
+        border: none;
+        transition: 0.3s;
+
+        &::before,
+        &::after {
+          position: absolute;
+          content: "";
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: var(--btn-bg);
+          opacity: 0;
+          transform: scaleX(0);
+          transition: 0.4s ease-in-out;
+        }
+
+        &::before {
+          top: 0;
+        }
+
+        &::after {
+          bottom: 0;
+        }
+
+        &:hover {
+          letter-spacing: 5px;
+          color: var(--btn-bg);
+          background: transparent;
+
+          &::before,
+          &::after {
+            opacity: 1;
+            transform: scaleX(1.2);
+          }
+        }
+      }
+    }
+
+    @keyframes jittery {
+      5%,
+      50% {
+        transform: scale(1);
+      }
+
+      10% {
+        transform: scale(0.9);
+      }
+
+      15% {
+        transform: scale(1.15);
+      }
+
+      20% {
+        transform: scale(1.15) rotate(-5deg);
+      }
+
+      25% {
+        transform: scale(1.15) rotate(5deg);
+      }
+
+      30% {
+        transform: scale(1.15) rotate(-3deg);
+      }
+
+      35% {
+        transform: scale(1.15) rotate(2deg);
+      }
+
+      40% {
+        transform: scale(1.15) rotate(0);
+      }
+    }
+
+    @keyframes jelly {
+      25% {
+        transform: scale(0.9, 1.1);
+      }
+
+      50% {
+        transform: scale(1.1, 0.9);
+      }
+
+      75% {
+        transform: scale(0.95, 1.05);
+      }
+    }
+
+    @keyframes pulse {
+      from {
+        box-shadow: 0 0 0 0 var(--btn-bg);
+      }
+    }
+
+    @keyframes move-left {
+      to {
+        transform: translateX(-100%);
+      }
+    }
+
+
+</style>
+<body>
+
+    <div class="buttons">
+        <button class="btn">
+            Default
+        </button>
+        <button class="btn btn-primary">
+            Primary
+        </button>
+        <button class="btn btn-secondary">
+            Secondary
+        </button>
+        <button class="btn btn-success">
+            Success
+        </button>
+        <button class="btn btn-info">
+            Info
+        </button>
+        <button class="btn btn-warning">
+            Warning
+        </button>
+        <button class="btn btn-danger">
+            Danger
+        </button>
+        <button class="btn btn-primary btn-round">
+            Round
+        </button>
+        <button class="btn btn-primary btn-circle">
+            <i class="search-icon"></i>
+        </button>
+        <button class="btn btn-primary disabled">
+            Disabled
+        </button>
+        <button class="btn btn-primary loading">Loading</button>
+        <button class="btn btn-primary btn-ghost">Ghost</button>
+        <button class="btn btn-primary">
+            <div class="inline-flex items-center space-x-2">
+                <i class="plus-icon"></i>
+                <div>Icon</div>
+            </div>
+        </button>
+        <button class="btn btn-primary btn-dashed">Dashed</button>
+        <button class="btn btn-primary btn-link">Link</button>
+        <button class="btn btn-primary btn-jittery">
+            Click Me
+        </button>
+        <button class="btn btn-primary btn-jelly">
+            Jelly
+        </button>
+        <button class="btn btn-primary btn-ghost btn-fill">
+            Fill In
+        </button>
+        <button class="btn btn-primary btn-pulse">
+            Pulse
+        </button>
+        <button class="btn btn-primary btn-ghost btn-open">
+            Open
+        </button>
+        <button class="btn btn-primary btn-ghost btn-close">
+            Close
+        </button>
+        <button class="btn btn-primary btn-ghost btn-slash">
+            Slash
+        </button>
+        <button class="btn btn-primary btn-ghost btn-fill-up">
+            Fill Up
+        </button>
+        <button class="btn btn-primary btn-ghost btn-slide">
+            Slide
+        </button>
+        <button class="btn btn-primary btn-ghost btn-through">
+            Through
+        </button>
+        <button class="btn btn-primary btn-ghost btn-offset">
+            Offset
+        </button>
+        <button class="btn btn-primary btn-ghost btn-flip-down">
+            Flip Down
+            <div class="front">Flip Down</div>
+            <div class="back">Flip Down</div>
+        </button>
+        <button class="btn btn-primary btn-round btn-marquee">
+            <span data-text="Marquee">Marquee</span>
+        </button>
+        <button class="btn btn-primary btn-ghost btn-cross">
+            Cross Bar
+        </button>
+        <button class="btn btn-primary btn-ghost btn-open-line">
+            Line
+        </button>
+    </div>
+
+
+
+</body>
+</html>
